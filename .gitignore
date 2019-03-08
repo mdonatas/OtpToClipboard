@@ -1,0 +1,7 @@
+/.vs/*/**
+*.suo
+*.user
+packages*/
+[Bb]in/
+[Dd]ebug*/
+obj/
