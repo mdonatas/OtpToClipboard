@@ -1,29 +1,29 @@
-﻿using System;
-using System.Linq;
 using OtpNet;
 
-namespace OtpToClipboard
+namespace OtpToClipboard;
+
+internal static class Program
 {
-    class Program
+    /// <summary>
+    ///  The main entry point for the application.
+    /// </summary>
+    [STAThread]
+    static void Main(string[] args)
     {
-        [STAThread]
-        static void Main(string[] args)
-        {
-            string otpKey = args.FirstOrDefault();
+        string? otpKey = args.FirstOrDefault();
 #if DEBUG
-            if (string.IsNullOrEmpty(otpKey))
-            {
-                otpKey = "ASD";
-            }
+        if (string.IsNullOrEmpty(otpKey))
+        {
+            otpKey = "ASD";
+        }
 #endif
 
-            var bytes = Base32Encoding.ToBytes(otpKey);
+        var bytes = Base32Encoding.ToBytes(otpKey);
 
-            var totp = new Totp(bytes, mode: OtpHashMode.Sha1);
+        var totp = new Totp(bytes, mode: OtpHashMode.Sha1);
 
-            string result = totp.ComputeTotp();
+        string result = totp.ComputeTotp();
 
-            System.Windows.Forms.Clipboard.SetText(result);
-        }
+        Clipboard.SetText(result);
     }
 }
