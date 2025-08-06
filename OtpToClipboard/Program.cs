@@ -4,9 +4,6 @@ namespace OtpToClipboard;
 
 internal static class Program
 {
-    /// <summary>
-    ///  The main entry point for the application.
-    /// </summary>
     [STAThread]
     static void Main(string[] args)
     {
@@ -22,8 +19,27 @@ internal static class Program
 
         var totp = new Totp(bytes, mode: OtpHashMode.Sha1);
 
-        string result = totp.ComputeTotp();
+        var result = totp.ComputeTotp();
 
-        Clipboard.SetText(result);
+        try
+        {
+            Clipboard.Clear();
+        }
+        catch
+        {
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            try
+            {
+                Clipboard.SetText(result, TextDataFormat.Text);
+                return;
+            }
+            catch
+            {
+                Thread.Sleep(200);
+            }
+        }
     }
 }
